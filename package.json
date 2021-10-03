@@ -1,0 +1,9 @@
+{
+  "name": "development",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.20.0",
+    "@graphprotocol/graph-ts": "0.20.0"
+  }
+}

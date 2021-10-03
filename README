@@ -1,0 +1,9 @@
+# BUILD
+
+yarn install
+yarn codegen
+
+# DEPLOY
+
+graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ <account_name>/<subgraph_name>
+

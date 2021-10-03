@@ -1,0 +1,57 @@
+type User @entity {
+  id: ID!
+  avatars: [Avatar!] @derivedFrom(field: "owner")
+  originals: [Original!] @derivedFrom(field: "owner")
+  prints: [UserPrint!] @derivedFrom(field: "user")
+}
+
+type Avatar @entity {
+  id: ID!
+  owner: User!,
+  number: BigInt!
+  species: BigInt!
+  color: BigInt!
+  slotCount: BigInt!
+  slots: [BigInt!]!
+  worn: [Original]!
+  tradedAt: BigInt!
+  createdAt: BigInt!
+  skinDropSelection: BigInt!
+}
+
+type Original @entity {
+  id: ID!
+  owner: User!
+  scalar: BigInt!
+  printPrice: BigInt!
+  burnPrice: BigInt!
+  slot: BigInt!
+  tradedAt: BigInt!
+  createdAt: BigInt!
+  expiration: BigInt!
+  supply: BigInt!
+  reserve: BigInt!
+  royalties: BigInt!
+}
+
+type Print @entity {
+  id: ID!
+  original: Original!
+  totalPrints: BigInt!
+  balances: [UserPrint!]! @derivedFrom(field: "print")
+  tradedAt: BigInt!
+}
+
+type UserPrint @entity {
+  id: ID! # userId-printId
+  user: User!
+  print: Print!
+  amount: BigInt
+}
+
+type Info @entity {
+  id: ID!
+  rerolls: BigInt!
+  unlocks: BigInt!
+  tokensBurned: BigInt!
+}

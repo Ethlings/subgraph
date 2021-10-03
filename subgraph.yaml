@@ -1,0 +1,81 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Ethlings
+    network: matic
+    source:
+      address: "0x8A1AbD2E227Db543F4228045dd0aCF658601fedE"
+      abi: Ethlings
+      startBlock: 15016359
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+        - AvatarChanged
+      abis:
+        - name: Ethlings
+          file: ./abis/Ethlings.json
+        - name: Wearables
+          file: ./abis/Wearables.json
+        - name: SkinDrop
+          file: ./abis/SkinDrop.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: AvatarChanged(uint256)
+          handler: handleAvatarChanged
+        - event: AvatarSlotsRerolled(uint256,uint256)
+          handler: handleAvatarRerolled
+        - event: AvatarSlotUnlocked(uint256,uint256)
+          handler: handleAvatarUnlocked
+      file: ./src/ethlings.ts
+
+  - kind: ethereum/contract
+    name: Wearables
+    network: matic
+    source:
+      address: "0x2b9bd413852401a7e09c77de1fab53915f8f9336"
+      abi: Wearables
+      startBlock: 15016359
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - TransferBatch
+        - TransferSingle
+      abis:
+        - name: Wearables
+          file: ./abis/Wearables.json
+      eventHandlers:
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+      file: ./src/wearables.ts
+
+  - kind: ethereum/contract
+    name: SkinDrop
+    network: matic
+    source:
+      # REMEMBER TO CHANGE IN ETHLINGS.TS
+      address: "0x9e28789EC0E126aDcDcB952ABFfA4Cb2A48f352b" # ^^^
+      abi: SkinDrop
+      startBlock: 15016359
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - RedeemedSkins
+      abis:
+        - name: SkinDrop
+          file: ./abis/SkinDrop.json
+      eventHandlers:
+        - event: RedeemedSkins(uint256[],uint256[])
+          handler: handleRedeemedSkin
+      file: ./src/skindrop.ts
